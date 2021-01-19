@@ -75,6 +75,13 @@ resource "aws_security_group" "security_group_vault" {
   }
 
   ingress {
+    from_port   = 8200
+    to_port     = 8200
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -111,7 +118,12 @@ data "template_file" "user_data_vault" {
   template = file("./modules/install-vault/install-vault.sh")
 
   vars = {
-    VAULT_VERSION    = var.vault_version
+    VAULT_ADDR         = var.vault_addr
+    VAULT_VERSION      = var.vault_version
+    VAULT_KV_ENGINE    = var.vault_kv_engine
+    VAULT_SECRETS_PATH = var.vault_secrets_path
+    VAULT_AUTH_USER    = var.vault_auth_user
+    VAULT_AUTH_PASS    = var.vault_auth_pass
   }
 }
 
@@ -126,7 +138,7 @@ resource "aws_instance" "vault_testing" {
   user_data = data.template_file.user_data_vault.rendered
 
   tags = {
-    Name = "Vault instance"
+    Name = "Vault EC2 instance"
   }
 
   connection {
@@ -136,4 +148,3 @@ resource "aws_instance" "vault_testing" {
     private_key = file(var.private_key_path)
   }
 }
-

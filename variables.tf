@@ -38,3 +38,24 @@ variable "vault_version" {
   default = "1.6.0"
 }
 
+variable "vault_kv_engine" {
+  default = "1"
+}
+
+variable "vault_secrets_path" {
+  default = "v1"
+}
+
+variable "vault_auth_user" {
+  type    = string
+  default = null
+}
+
+variable "vault_auth_pass" {
+  type    = string
+  default = null
+}
+
+variable "vault_addr" {
+  default = "http://0.0.0.0:8200"
+}
