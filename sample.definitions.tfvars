@@ -1,0 +1,7 @@
+ami_id            = "##Change"
+aws_region        = "##Change"
+aws_profile       = "##Change"
+private_key_path  = "##Change"
+public_key_path   = "##Change"
+deployer_key_name = "##Change"
+ssh_user          = "##Change"

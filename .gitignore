@@ -1,0 +1,7 @@
+.terraform
+.terraform.*
+terraform.*
+.DS_Store
+crash.log
+definitions.tfvars
+crash.log
