@@ -2,6 +2,10 @@
 
 EC2 instance for Vault server with File backend in AWS
 
+## Requirements
+
+To start, enter your AWS access keys with aws CLI.
+
 ## Usage
 For this instance we use Terraform to build infrastructure
 
