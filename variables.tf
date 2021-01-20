@@ -32,6 +32,10 @@ variable "ssh_user" {
   default = "ubuntu"
 }
 
+variable "environment" {
+  default = "dev"
+}
+
 ## VAULT BASH CONFIG
 
 variable "vault_version" {

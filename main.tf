@@ -17,7 +17,8 @@ resource "aws_vpc" "vpc_vault" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "VPC Vault"
+    Name        = "VPC Vault"
+    Environment = var.environment
   }
 }
 
@@ -27,7 +28,8 @@ resource "aws_subnet" "public_vault" {
   availability_zone = "us-west-2a"
 
   tags = {
-    Name = "Public Vault"
+    Name        = "Public Vault"
+    Environment = var.environment
   }
 }
 
@@ -35,7 +37,8 @@ resource "aws_internet_gateway" "internet_gateway_vault" {
   vpc_id = aws_vpc.vpc_vault.id
 
   tags = {
-    Name = "Internet Gateway Vault"
+    Name        = "Internet Gateway Vault"
+    Environment = var.environment
   }
 }
 
@@ -48,7 +51,8 @@ resource "aws_route_table" "route_table" {
   }
 
   tags = {
-    Name = "Public Subnet Route Table"
+    Name        = "Public Subnet Route Table"
+    Environment = var.environment
   }
 }
 
@@ -110,7 +114,8 @@ resource "aws_security_group" "security_group_vault" {
   }
 
   tags = {
-    Name = "Security Group Vault"
+    Name        = "Security Group Vault"
+    Environment = var.environment
   }
 }
 
@@ -138,7 +143,8 @@ resource "aws_instance" "vault_testing" {
   user_data = data.template_file.user_data_vault.rendered
 
   tags = {
-    Name = "Vault EC2 instance"
+    Name        = "Vault EC2 instance"
+    Environment = var.environment
   }
 
   connection {

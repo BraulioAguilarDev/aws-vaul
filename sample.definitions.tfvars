@@ -5,6 +5,7 @@ private_key_path  = "##Change"
 public_key_path   = "##Change"
 deployer_key_name = "##Change"
 ssh_user          = "##Change"
+environment       = "##Change"
 
 # Vault bash config
 vault_version      = "##Change"
