@@ -2,7 +2,7 @@
 
 ###########################################
 #
-#   Hashicorp Vault Setup on Amazon Ec23
+#   Hashicorp Vault Setup on Amazon EC2
 #
 ###########################################
 set -e
@@ -182,3 +182,45 @@ vault policy write admin-vault $POLICY_ADMIN_VAULT_HCL
 
 # Create users with policy
 vault write auth/userpass/users/${VAULT_AUTH_USER} policies=admin-vault password=${VAULT_AUTH_PASS}
+
+export POLICY_ADMIN_HCL=$VAULT_POLICY_PATH/admin.hcl
+export POLICY_USER_HCL=$VAULT_POLICY_PATH/user.hcl
+export POLICY_GUEST_HCL=$VAULT_POLICY_PATH/guest.hcl
+
+# Create admin policy
+touch $POLICY_ADMIN_HCL
+
+cat <<EOF >$POLICY_ADMIN_HCL
+  path "v1/*" {
+    capabilities = ["create", "read", "update", "delete", "list"]
+  }
+EOF
+
+vault policy write admin $POLICY_ADMIN_HCL
+
+# Create user policy
+touch $POLICY_USER_HCL
+
+cat <<EOF >$POLICY_USER_HCL
+  path "v1/test/*" {
+    capabilities = ["read", "list"]
+  }
+EOF
+
+vault policy write user $POLICY_USER_HCL
+
+# Create guest policy
+touch $POLICY_GUEST_HCL
+
+cat <<EOF >$POLICY_GUEST_HCL
+  path "v1/other/*" {
+    capabilities = ["read", "list"]
+  }
+EOF
+
+vault policy write guest $POLICY_GUEST_HCL
+
+# Join role with policy
+vault write auth/approle/role/admin secret_id_ttl=10m token_num_uses=10 token_ttl=20m token_max_ttl=30m secret_id_num_uses=40 policies=admin
+vault write auth/approle/role/user secret_id_ttl=10m token_num_uses=10 token_ttl=20m token_max_ttl=30m secret_id_num_uses=40 policies=user
+vault write auth/approle/role/guest secret_id_ttl=10m token_num_uses=10 token_ttl=20m token_max_ttl=30m secret_id_num_uses=40 policies=guest
